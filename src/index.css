@@ -4,8 +4,8 @@ body {
 }
 
 div#root{
-  width: 100vw;
-  height: 100vh;
+  min-width: 1024px;
+  min-height: 768px;
 }
 
 :root{

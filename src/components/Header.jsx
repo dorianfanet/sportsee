@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 
 const HeaderContainer = styled.header`
+  min-width: 1024px;
   width: 100%;
   padding: 0 30px;
   height: 91px;
