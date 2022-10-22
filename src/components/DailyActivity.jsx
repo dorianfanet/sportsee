@@ -170,11 +170,10 @@ export default function DailyActivity() {
     const y = d3.scaleLinear()
       .domain([0, dataMax])
       .range([height, 0])
-      .nice()
 
     // Generator
     const yAxisGeneratorRight = d3.axisRight(y)
-      .ticks(2)
+      .tickValues([0, dataMax / 2, dataMax])
       .tickSize(- width)
 
     // yAxis
@@ -204,11 +203,10 @@ export default function DailyActivity() {
     const y2 = d3.scaleLinear()
       .domain([0, dataMax2])
       .range([height, 0])
-      .nice()
 
     // Generator
     const y2AxisGeneratorLeft = d3.axisLeft(y2)
-      .tickValues([0, 45, 90])
+      .tickValues([0, dataMax2 / 2, dataMax2])
       .tickSize(- width)
 
     // y2Axis
@@ -289,7 +287,7 @@ export default function DailyActivity() {
       .join('g')
         .attr('transform', d => `translate(${x(d.day) + 60}, -32)`)
         .attr('opacity', 0)
-        .classed('caption', true)
+        .classed(`caption`, true)
 
     d3.selectAll('g.caption')
       .append('rect')
@@ -318,13 +316,12 @@ export default function DailyActivity() {
     d3.selectAll('div.grid div')
     .on('mouseenter', function (d, i) {
       const gridElId = this.getAttribute('id')
-      console.log(gridElId)
-      d3.select(`.caption:nth-child(${gridElId})`).transition()
+      d3.selectAll(`.caption:nth-child(${gridElId})`).transition()
           .duration('200')
           .attr('opacity', '1')})
     .on('mouseout', function (d, i) {
       const gridElId = this.getAttribute('id')
-      d3.select(`.caption:nth-child(${gridElId})`).transition()
+      d3.selectAll(`.caption:nth-child(${gridElId})`).transition()
           .duration('200')
           .attr('opacity', '0')})
   })

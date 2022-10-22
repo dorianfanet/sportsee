@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom"
 import styled from "styled-components"
 import DailyActivity from "../components/DailyActivity"
+import KeyData from '../components/KeyData'
 import { USER_MAIN_DATA } from "../data/data"
 
 const Container = styled.section`
@@ -56,10 +57,17 @@ margin-bottom: 30px;
   }
 
   & aside{
-    background-color: lightcoral;
     height: 100%;
     grid-column: 2;
     grid-row: 1 / 3;
+
+    ul{
+      margin: 0;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 39px;
+    }
   }
 `
 
@@ -69,6 +77,8 @@ export default function Profile() {
   const idParam = parseInt(id)
 
   const user = USER_MAIN_DATA.find(e => e.id === idParam)
+
+  const keyDataTypes = ['calorieCount', 'proteinCount', 'carbohydrateCount', 'lipidCount']
 
   return(
     <Container>
@@ -83,7 +93,15 @@ export default function Profile() {
           <div></div>
           <div></div>
         </div>
-        <aside></aside>
+        <aside>
+          <ul>
+            {keyDataTypes.map((type) => 
+              <KeyData 
+                type={type}
+              />
+            )}
+          </ul>
+        </aside>
       </Section>
     </Container>
   )
