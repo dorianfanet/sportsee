@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom"
 import styled from "styled-components"
+import DailyActivity from "../components/DailyActivity"
 import { USER_MAIN_DATA } from "../data/data"
 
 const Container = styled.section`
@@ -25,6 +26,43 @@ const Container = styled.section`
   }
 `
 
+const Section = styled.section`
+margin-bottom: 30px;
+  width: 100%;
+  height: 600px;
+  display: grid;
+  grid-template-columns: 75% 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 30px;
+
+  & .charts{
+    width: 100%;
+    height: 100%;
+    background-color: var(--backgroundGrey);
+  }
+
+  & .small-charts{
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+
+    & div{
+      background-color: lightcyan;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  & aside{
+    background-color: lightcoral;
+    height: 100%;
+    grid-column: 2;
+    grid-row: 1 / 3;
+  }
+`
+
 export default function Profile() {
 
   const { id } = useParams()
@@ -36,6 +74,17 @@ export default function Profile() {
     <Container>
       <h1>Bonjour <span>{user.userInfos.firstName}</span></h1>
       <h2>Félicitation ! Vous avez explosé vos objectifs hier 👏</h2>
+      <Section>
+        <div className="charts">
+          <DailyActivity />
+        </div>
+        <div className="small-charts">
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+        <aside></aside>
+      </Section>
     </Container>
   )
 }

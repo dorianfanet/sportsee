@@ -11,6 +11,8 @@ div#root{
 :root{
   --mainColor: #FF0000;
   --secondaryColor: #020203;
+  --backgroundGrey: #FBFBFB;
+  --greyText: #9B9EAC;
 }
 
 a{
@@ -23,4 +25,8 @@ ul{
 
 li{
   list-style: none;
+}
+
+svg{
+  overflow: visible;
 }
