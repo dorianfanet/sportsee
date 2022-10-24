@@ -108,6 +108,7 @@ export default function DailyActivity() {
 
   const dataMax = Math.max(...data.map(e => e.calories))
   const dataMax2 = Math.max(...data.map(e => e.kilogram))
+  const dataMin2 = Math.min(...data.map(e => e.kilogram))
 
   const subgroups = ['kilogram', 'calories']
 
@@ -201,12 +202,13 @@ export default function DailyActivity() {
     // y2 Axis
 
     const y2 = d3.scaleLinear()
-      .domain([0, dataMax2])
+      .domain([dataMin2 - 3, dataMax2])
       .range([height, 0])
 
     // Generator
     const y2AxisGeneratorLeft = d3.axisLeft(y2)
-      .tickValues([0, dataMax2 / 2, dataMax2])
+      .tickValues([dataMin2 - 3, ((dataMax2 - (dataMin2 - 3)) / 2) + (dataMin2 - 3), dataMax2])
+      .tickFormat(d3.format('1'))
       .tickSize(- width)
 
     // y2Axis
@@ -261,22 +263,19 @@ export default function DailyActivity() {
       .selectAll('rect')
       .data(function(d) {return subgroups.map(function(index) { return{index: index, value: d[index]} })})
       .join((enter) => {
-        let g = enter
-
-
-        g.append('rect')
+        enter.append('rect')
           .attr('x', d => xSubgroup(d.index))
           .attr('y', d => order(d.index, d.value))
           .attr('width', xSubgroup.bandwidth())
           .attr('height', d => height  - order(d.index, d.value))
           .attr('fill', d => colors(d.index))
-          .attr('rx', 4)
+          .attr('rx', 5)
 
-        g.append('rect')
+        enter.append('rect')
           .attr('x', d => xSubgroup(d.index))
-          .attr('y', height - 10)
+          .attr('y', height - 3)
           .attr('width', xSubgroup.bandwidth())
-          .attr('height', 10)
+          .attr('height', 3)
           .attr('fill', d => colors(d.index))
       })
     

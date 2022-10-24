@@ -1,7 +1,10 @@
 import { useParams } from "react-router-dom"
 import styled from "styled-components"
+import AverageSessions from "../components/AverageSessions"
 import DailyActivity from "../components/DailyActivity"
 import KeyData from '../components/KeyData'
+import UserPerformance from '../components/UserPerformance'
+import Score from '../components/Score'
 import { USER_MAIN_DATA } from "../data/data"
 
 const Container = styled.section`
@@ -28,7 +31,7 @@ const Container = styled.section`
 `
 
 const Section = styled.section`
-margin-bottom: 30px;
+  margin-bottom: 30px;
   width: 100%;
   height: 600px;
   display: grid;
@@ -40,6 +43,7 @@ margin-bottom: 30px;
     width: 100%;
     height: 100%;
     background-color: var(--backgroundGrey);
+    border-radius: 5px;
   }
 
   & .small-charts{
@@ -49,8 +53,7 @@ margin-bottom: 30px;
     grid-template-columns: repeat(3, 1fr);
     gap: 30px;
 
-    & div{
-      background-color: lightcyan;
+    & > div{
       width: 100%;
       height: 100%;
     }
@@ -89,9 +92,15 @@ export default function Profile() {
           <DailyActivity />
         </div>
         <div className="small-charts">
-          <div></div>
-          <div></div>
-          <div></div>
+          <div>
+            <AverageSessions />
+          </div>
+          <div>
+            <UserPerformance />
+          </div>
+          <div>
+            <Score />
+          </div>
         </div>
         <aside>
           <ul>

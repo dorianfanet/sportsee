@@ -101,7 +101,7 @@ export default function KeyData({ type }) {
         <img src={keyDataType.icon} alt="" />
       </figure>
       <div>
-        <p>{keyDataType.dataPath} {keyDataType.unit}</p>
+        <p>{keyDataType.dataPath.toLocaleString('fr-FR')} {keyDataType.unit}</p>
         <span>{keyDataType.name}</span>
       </div>
     </Container>
