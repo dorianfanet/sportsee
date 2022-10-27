@@ -62,7 +62,7 @@ export default function SelectProfile() {
       <ul>
         {users.map((user) => 
           <li>
-            <Link to={`/profile/${user.id}`}>
+            <Link to={`/user/${user.id}`}>
               <div>
                 <h2>{user.userInfos.firstName}</h2>
                 <h3>{user.userInfos.lastName}</h3>

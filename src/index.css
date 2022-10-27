@@ -30,3 +30,7 @@ li{
 svg{
   overflow: visible;
 }
+
+.chart-container{
+  border-radius: 5px;
+}

@@ -7,7 +7,6 @@ import { USER_MAIN_DATA } from '../data/data'
 const Container = styled.div`
   height: 100%;
   width: 100%;
-  background-color: var(--backgroundGrey);
   border-radius: 5px;
   position: relative;
 
@@ -40,13 +39,11 @@ const Container = styled.div`
   }
 `
 
-export default function Score() {
+export default function Score({ data }) {
 
   const {id} = useParams()
   const user = USER_MAIN_DATA.find(e => e.id === parseInt(id))
-  const data = user.score
-
-  const percent = data * 100
+  // const data = user.score
 
   const ref = useRef(null)
 
@@ -86,7 +83,7 @@ export default function Score() {
       .outerRadius(height / 3.2 - 10)
       .cornerRadius(20)
       .startAngle(0)
-      .endAngle(percent * (Math.PI * 2) / 100)
+      .endAngle(data * (Math.PI * 2) / 100)
 
     svg.append('path')
       .attr('d', arcLine)
@@ -94,7 +91,7 @@ export default function Score() {
       .attr('transform', 'translate(50%, 50%)')
 
     svg.append('text')
-      .datum(percent)
+      .datum(data)
       .attr('text-anchor', 'middle')
       .attr('fill', '#282D30')
       .attr('font-weight', 'bold')

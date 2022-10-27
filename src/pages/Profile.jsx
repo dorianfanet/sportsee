@@ -5,7 +5,13 @@ import DailyActivity from "../components/DailyActivity"
 import KeyData from '../components/KeyData'
 import UserPerformance from '../components/UserPerformance'
 import Score from '../components/Score'
-import { USER_MAIN_DATA } from "../data/data"
+import { USER_AVERAGE_SESSIONS, USER_MAIN_DATA } from "../services/mockedData"
+import { USER_ACTIVITY } from "../services/mockedData"
+import { USER_PERFORMANCE } from "../services/mockedData"
+import userData from '../services/userData'
+import { useEffect, useState, useContext } from 'react';
+import WatermarkLogo from "../components/WatermarkLogo"
+import { DataSourceContext } from "../context/DataSourceContext"
 
 const Container = styled.section`
   margin: 150px 90px 0 220px;
@@ -33,10 +39,9 @@ const Container = styled.section`
 const Section = styled.section`
   margin-bottom: 30px;
   width: 100%;
-  height: 600px;
   display: grid;
   grid-template-columns: 75% 1fr;
-  grid-template-rows: 1fr 1fr;
+  grid-template-rows: 280px 280px;
   gap: 30px;
 
   & .charts{
@@ -76,40 +81,136 @@ const Section = styled.section`
 
 export default function Profile() {
 
-  const { id } = useParams()
-  const idParam = parseInt(id)
+  const [dataUserInfos, setDataUserInfos] = useState()
+  const [dataUserActivity, setDataUserActivity] = useState()
+  const [dataUserPerformance, setDataUserPerformance] = useState()
+  const [dataUserAverageSessions, setDataUserAverageSessions] = useState()
 
-  const user = USER_MAIN_DATA.find(e => e.id === idParam)
+  const [dataSourceState, setDataSourceState] = useState('mock')
 
-  const keyDataTypes = ['calorieCount', 'proteinCount', 'carbohydrateCount', 'lipidCount']
+  const { dataSource } = useContext(DataSourceContext)
 
-  return(
+  console.log(dataSource)
+
+  const {id} = useParams()
+
+  useEffect(() => {
+    async function getApiData() {
+      console.log('loading api')
+      const data = new userData(id)
+
+      const userInfos = await data.getUserInfos()
+      const userActivity = await data.getUserActivity()
+      const userPerformance = await data.getUserPerformance()
+      const userAverageSessions = await data.getUserAverageSessions()
+      
+      setDataUserInfos(userInfos)
+      setDataUserActivity(userActivity)
+      setDataUserPerformance(userPerformance)
+      setDataUserAverageSessions(userAverageSessions)
+
+      setDataSourceState('api')
+    }
+
+    function getMockData() {
+      const userInfos = USER_MAIN_DATA.find(e => e.id === parseInt(id))
+      const userActivity = USER_ACTIVITY.find(e => e.id === parseInt(id))
+      const userPerformance = USER_PERFORMANCE.find(e => e.id === parseInt(id))
+      const userAverageSessions = USER_AVERAGE_SESSIONS.find(e => e.id === parseInt(id))
+
+      setDataUserInfos(userInfos)
+      setDataUserActivity(userActivity.sessions)
+      setDataUserPerformance(userPerformance.data)
+      setDataUserAverageSessions(userAverageSessions.sessions)
+
+      setDataSourceState('mock')
+    }
+
+    if(dataSource === 'api' && dataSourceState !== 'api') {
+      console.log(dataSource, dataSourceState)
+      getApiData()
+    } else if(dataSource === 'mock') {
+      console.log(dataSource, dataSourceState)
+      getMockData()
+    }
+  })
+
+  useEffect(() => {
+    console.log(dataUserActivity)
+  })
+
+  return (
     <Container>
-      <h1>Bonjour <span>{user.userInfos.firstName}</span></h1>
-      <h2>Félicitation ! Vous avez explosé vos objectifs hier 👏</h2>
+      {dataUserInfos && (
+        <div>
+          <h1>Bonjour <span>{dataUserInfos.firstName}</span></h1>
+          <h2>Félicitation ! Vous avez explosé vos objectifs hier 👏</h2>
+        </div>
+      )}
+      
       <Section>
         <div className="charts">
-          <DailyActivity />
+          {dataUserActivity ? (
+            <DailyActivity 
+              data={dataUserActivity}
+            />
+          ) : (
+            <WatermarkLogo
+              type={'dark'}
+            />
+          )}
         </div>
         <div className="small-charts">
-          <div>
-            <AverageSessions />
+          <div className='chart-container' style={{backgroundColor: '#FF0000'}}>
+            {dataUserAverageSessions ? (
+              <AverageSessions
+                data={dataUserAverageSessions}
+              />
+            ) : (
+              <WatermarkLogo
+                type={''}
+              />
+            )}
           </div>
-          <div>
-            <UserPerformance />
+          <div className='chart-container' style={{backgroundColor: '#282D30'}}>
+            {dataUserPerformance ? (
+              <UserPerformance
+                data={dataUserPerformance}
+              />
+            ) : (
+              <WatermarkLogo
+                type={''}
+              />
+            )}
           </div>
-          <div>
-            <Score />
+          <div className='chart-container' style={{backgroundColor: 'var(--backgroundGrey)'}}>
+            {dataUserInfos ? (
+              <Score
+                data={dataUserInfos.score}
+              />
+            ) : (
+              <WatermarkLogo
+                type={'dark'}
+              />
+            )}
           </div>
         </div>
         <aside>
-          <ul>
-            {keyDataTypes.map((type) => 
-              <KeyData 
-                type={type}
+          {dataUserInfos ? (
+            <ul>
+              {dataUserInfos.keyData.map((data) => 
+                <KeyData 
+                  data={data}
+                />
+              )}
+            </ul>
+          ) : (
+            <div style={{backgroundColor: 'var(--backgroundGrey)', borderRadius: '5px', height: '100%'}}>
+              <WatermarkLogo
+                type={'dark'}
               />
-            )}
-          </ul>
+            </div>
+          )}
         </aside>
       </Section>
     </Container>

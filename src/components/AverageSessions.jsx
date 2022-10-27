@@ -81,13 +81,11 @@ const Desc = styled.div`
   }
 `
 
-export default function AverageSessions() {
+export default function AverageSessions({ data }) {
 
   const {id} = useParams()
   const user = USER_AVERAGE_SESSIONS.find(e => e.userId === parseInt(id))
-  const data = user.sessions
-
-  console.log(data)
+  // const data = user.sessions
 
   const ref = useRef(null)
 

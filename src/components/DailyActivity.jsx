@@ -80,31 +80,9 @@ const Grid = styled.div`
     }
 `
 
-const days = [
-  'Dimanche',
-  'Lundi',
-  'Mardi',
-  'Mercredi',
-  'Jeudi',
-  'Vendredi',
-  'Samedi'
-]
+export default function DailyActivity({ data }) {
 
-export default function DailyActivity() {
-
-  const {id} = useParams()
-  const user = USER_ACTIVITY.find(e => e.userId === parseInt(id))
-  const data = user.sessions
-
-  const formattedDates = data.map((d) => {
-
-    const newDate = new Date(d.day)
-    const dayIndex = newDate.getDay()
-    const dayName = days[dayIndex]
-    const formattedDate = `${dayName} ${newDate.getDate()}`
-
-    return  formattedDate
-  })
+  console.log(data)
 
   const dataMax = Math.max(...data.map(e => e.calories))
   const dataMax2 = Math.max(...data.map(e => e.kilogram))
@@ -150,7 +128,7 @@ export default function DailyActivity() {
     // Generator
     const xAxisGenerator = d3.axisBottom(x)
       .tickSize(0)
-      .tickFormat((d, i) => formattedDates[i])
+      .tickFormat((d, i) => data[i].day)
       
     // xAxis
     const xAxis = svg.append('g')

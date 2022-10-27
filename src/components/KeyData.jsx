@@ -8,10 +8,9 @@ import styled from 'styled-components'
 
 const Container = styled.li`
   height: 124px;
-  background-color: #FBFBFB;
-  border-radius: 5px;
   display: flex;
   align-items: center;
+  background-color: var(--backgroundGrey);
 
   figure{
     width: 60px;
@@ -55,54 +54,21 @@ const Container = styled.li`
   }
 `
 
-export default function KeyData({ type }) {
+export default function KeyData({ data }) {
 
   const { id } = useParams()
   const idParam = parseInt(id)
 
   const user = USER_MAIN_DATA.find(e => e.id === idParam)
 
-  const keyDataTypes = [
-    {
-      'type': 'calorieCount',
-      'name': 'Calories',
-      'icon': caloriesIcon,
-      'dataPath': user.keyData.calorieCount,
-      'unit': 'kCal'
-    },
-    {
-      'type': 'proteinCount',
-      'name': 'Protéines',
-      'icon': proteinsIcon,
-      'dataPath': user.keyData.proteinCount,
-      'unit': 'g'
-    },
-    {
-      'type': 'carbohydrateCount',
-      'name': 'Glucides',
-      'icon': carbsIcon,
-      'dataPath': user.keyData.carbohydrateCount,
-      'unit': 'g'
-    },
-    {
-      'type': 'lipidCount',
-      'name': 'Lipides',
-      'icon': lipidsIcon,
-      'dataPath': user.keyData.lipidCount,
-      'unit': 'g'
-    }
-  ]
-
-  const keyDataType = keyDataTypes.find(e => e.type === type)
-
   return (
     <Container>
-      <figure className={keyDataType.type}>
-        <img src={keyDataType.icon} alt="" />
+      <figure className={data.type}>
+        <img src={data.icon} alt="" />
       </figure>
       <div>
-        <p>{keyDataType.dataPath.toLocaleString('fr-FR')} {keyDataType.unit}</p>
-        <span>{keyDataType.name}</span>
+        <p>{data.amount.toLocaleString('fr-FR')} {data.unit}</p>
+        <span>{data.name}</span>
       </div>
     </Container>
   )
