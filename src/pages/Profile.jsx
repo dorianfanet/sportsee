@@ -5,9 +5,9 @@ import DailyActivity from "../components/DailyActivity"
 import KeyData from '../components/KeyData'
 import UserPerformance from '../components/UserPerformance'
 import Score from '../components/Score'
-import { USER_AVERAGE_SESSIONS, USER_MAIN_DATA } from "../services/mockedData"
-import { USER_ACTIVITY } from "../services/mockedData"
-import { USER_PERFORMANCE } from "../services/mockedData"
+import { USER_AVERAGE_SESSIONS, USER_MAIN_DATA } from "../data/mockedData"
+import { USER_ACTIVITY } from "../data/mockedData"
+import { USER_PERFORMANCE } from "../data/mockedData"
 import userData from '../services/userData'
 import { useEffect, useState, useContext } from 'react';
 import WatermarkLogo from "../components/WatermarkLogo"

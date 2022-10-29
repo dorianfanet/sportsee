@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import { USER_MAIN_DATA } from "../data/data"
+import { USER_MAIN_DATA } from "../data/mockedData"
 import { Link } from 'react-router-dom'
 
 const Container = styled.section`
@@ -66,9 +66,8 @@ export default function SelectProfile() {
           >
             <Link to={`/user/${user.id}`}>
               <div>
-                <h2>{user.userInfos.firstName}</h2>
-                <h3>{user.userInfos.lastName}</h3>
-                <p>{user.userInfos.age} ans</p>
+                <h2>{user.firstName}</h2>
+                <h3>{user.lastName}</h3>
               </div>
             </Link>
           </li>
