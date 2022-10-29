@@ -1,7 +1,5 @@
 import * as d3 from 'd3'
 import { useRef, useEffect, useLayoutEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
-import { USER_ACTIVITY } from '../data/data';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -59,9 +57,9 @@ const Grid = styled.div`
   display: grid;
     grid-template-columns: repeat(7, 1fr);
     width: calc(100% - 180px);
-    height: calc(100% - 154px);
+    height: calc(100% - 130px);
     position: absolute;
-    top: 100px;
+    top: 80px;
     left: 90px;
     pointer-events: all;
     z-index: 10;
@@ -82,8 +80,6 @@ const Grid = styled.div`
 
 export default function DailyActivity({ data }) {
 
-  console.log(data)
-
   const dataMax = Math.max(...data.map(e => e.calories))
   const dataMax2 = Math.max(...data.map(e => e.kilogram))
   const dataMin2 = Math.min(...data.map(e => e.kilogram))
@@ -102,205 +98,206 @@ export default function DailyActivity({ data }) {
 
   useEffect(() => {
 
-    // set the dimensions and margins of the graph
-    const margin = {top: 100, right: 90, bottom: 50, left: 90};
-    const width = divWidth - margin.left - margin.right;
-    const height = divHeight - margin.top - margin.bottom;
+    if(divHeight && divWidth) {
+      // set the dimensions and margins of the graph
+      const margin = {top: 80, right: 90, bottom: 50, left: 90};
+      const width = divWidth - margin.left - margin.right;
+      const height = divHeight - margin.top - margin.bottom;
 
-    // append the svg object to the body of the page
-    const svgEl = d3.select(ref.current)
-    svgEl.selectAll('svg').remove()
-    const svg = svgEl
-      .append('svg')
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
-      .append("g")
-      .attr("transform", `translate(${margin.left}, ${margin.top})`);
+      // append the svg object to the body of the page
+      const svgEl = d3.select(ref.current)
+      svgEl.selectAll('svg').remove()
+      const svg = svgEl
+        .append('svg')
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
-    // x Axis
-    
-    const x = d3.scaleBand()
-      .domain(data.map(d => d.day))
-      .range([0, width])
-      .rangeRound([0, width])
-      .paddingInner(0.3)
-
-    // Generator
-    const xAxisGenerator = d3.axisBottom(x)
-      .tickSize(0)
-      .tickFormat((d, i) => data[i].day)
+      // x Axis
       
-    // xAxis
-    const xAxis = svg.append('g')
-      .attr('transform', `translate(0, ${height})`)
-      .call(xAxisGenerator)
-    
-    xAxis.select('path')
-      .attr('stroke', '#DEDEDE')
+      const x = d3.scaleBand()
+        .domain(data.map(d => d.day))
+        .range([0, width])
+        .rangeRound([0, width])
+        .paddingInner(0.3)
 
-    xAxis.selectAll('text')
-      .attr('transform', 'translate(0, 20)')
-      .attr('fill', '#9B9EAC')
-      .attr('font-family', 'Roboto')
-      .attr('font-size', '14')
+      // Generator
+      const xAxisGenerator = d3.axisBottom(x)
+        .tickSize(0)
+        .tickFormat((d, i) => data[i].day)
+        
+      // xAxis
+      const xAxis = svg.append('g')
+        .attr('transform', `translate(0, ${height})`)
+        .call(xAxisGenerator)
+      
+      xAxis.select('path')
+        .attr('stroke', '#DEDEDE')
 
-    // y Axis
+      xAxis.selectAll('text')
+        .attr('transform', 'translate(0, 20)')
+        .attr('fill', '#9B9EAC')
+        .attr('font-family', 'Roboto')
+        .attr('font-size', '12')
 
-    const y = d3.scaleLinear()
-      .domain([0, dataMax])
-      .range([height, 0])
+      // y Axis
 
-    // Generator
-    const yAxisGeneratorRight = d3.axisRight(y)
-      .tickValues([0, dataMax / 2, dataMax])
-      .tickSize(- width)
+      const y = d3.scaleLinear()
+        .domain([0, dataMax])
+        .range([height, 0])
 
-    // yAxis
-    const yAxisRight = svg.append('g')
-      .attr('transform', `translate(${width}, 0)`)
-      .call(yAxisGeneratorRight)
+      // Generator
+      const yAxisGeneratorRight = d3.axisRight(y)
+        .tickValues([0, dataMax / 2, dataMax])
+        .tickSize(- width)
 
-    yAxisRight.select('path')
-      .attr('stroke-width', '0')
+      // yAxis
+      const yAxisRight = svg.append('g')
+        .attr('transform', `translate(${width}, 0)`)
+        .call(yAxisGeneratorRight)
 
-    yAxisRight.selectAll('line')
-      .attr('stroke-dasharray', '4')
-      .attr('stroke', '#F9BEBE')
+      yAxisRight.select('path')
+        .attr('stroke-width', '0')
 
-    yAxisRight.select(':nth-child(2) line')
-      .attr('stroke-width', 0)
-    
-    yAxisRight.selectAll('text')
-      .attr('fill', '#9B9EAC')
-      .attr('font-family', 'Roboto')
-      .attr('font-size', '14')
-      .attr('transform', 'translate(40, 0)')
-      .attr('font-weight', '500')
+      yAxisRight.selectAll('line')
+        .attr('stroke-width', 0)
 
-    // y2 Axis
+      yAxisRight.select(':nth-child(2) line')
+        .attr('stroke-width', 0)
+      
+      yAxisRight.selectAll('text')
+        .attr('fill', '#9B9EAC')
+        .attr('font-family', 'Roboto')
+        .attr('font-size', '14')
+        .attr('transform', 'translate(40, 0)')
+        .attr('font-weight', '500')
 
-    const y2 = d3.scaleLinear()
-      .domain([dataMin2 - 3, dataMax2])
-      .range([height, 0])
+      // y2 Axis
 
-    // Generator
-    const y2AxisGeneratorLeft = d3.axisLeft(y2)
-      .tickValues([dataMin2 - 3, ((dataMax2 - (dataMin2 - 3)) / 2) + (dataMin2 - 3), dataMax2])
-      .tickFormat(d3.format('1'))
-      .tickSize(- width)
+      const y2 = d3.scaleLinear()
+        .domain([dataMin2 - 3, dataMax2])
+        .range([height, 0])
 
-    // y2Axis
-    const y2AxisLeft = svg.append('g')
-      .call(y2AxisGeneratorLeft)
+      // Generator
+      const y2AxisGeneratorLeft = d3.axisLeft(y2)
+        .tickValues([dataMin2 - 3, ((dataMax2 - (dataMin2 - 3)) / 2) + (dataMin2 - 3), dataMax2])
+        .tickFormat(d3.format('1'))
+        .tickSize(- width)
 
-    y2AxisLeft.select('path')
-      .attr('stroke-width', '0')
+      // y2Axis
+      const y2AxisLeft = svg.append('g')
+        .call(y2AxisGeneratorLeft)
 
-    y2AxisLeft.selectAll('line')
-      .attr('stroke-dasharray', '4')
-      .attr('stroke', '#DEDEDE')
+      y2AxisLeft.select('path')
+        .attr('stroke-width', '0')
 
-    y2AxisLeft.select(':nth-child(2) line')
-      .attr('stroke-width', 0)
-    
-    y2AxisLeft.selectAll('text')
-      .attr('fill', '#9B9EAC')
-      .attr('font-family', 'Roboto')
-      .attr('font-size', '14')
-      .attr('transform', 'translate(-40, 0)')
-      .attr('font-weight', '500')
+      y2AxisLeft.selectAll('line')
+        .attr('stroke-dasharray', '4')
+        .attr('stroke', '#DEDEDE')
 
-    // xSubgroup
-    
-    const xSubgroup = d3.scaleBand()
-      .domain(subgroups)
-      .range([0, x.bandwidth()])
-      .padding(0.6)
+      y2AxisLeft.select(':nth-child(2) line')
+        .attr('stroke-width', 0)
+      
+      y2AxisLeft.selectAll('text')
+        .attr('fill', '#9B9EAC')
+        .attr('font-family', 'Roboto')
+        .attr('font-size', '14')
+        .attr('transform', 'translate(-40, 0)')
+        .attr('font-weight', '500')
 
-    const colors = d3.scaleOrdinal()
-      .domain(subgroups)
-      .range(['#282D30', '#E60000'])
+      // xSubgroup
+      
+      const xSubgroup = d3.scaleBand()
+        .domain(subgroups)
+        .range([0, x.bandwidth()])
+        .padding(0.6)
 
-    function order(index, value) {
-      let newValue = 0;
+      const colors = d3.scaleOrdinal()
+        .domain(subgroups)
+        .range(['#282D30', '#E60000'])
 
-      if(index === 'kilogram') {
-        newValue = y2(value)
-      } else {
-        newValue = y(value)
+      function order(index, value) {
+        let newValue = 0;
+
+        if(index === 'kilogram') {
+          newValue = y2(value)
+        } else {
+          newValue = y(value)
+        }
+
+        return newValue
       }
+      
+      svg.append('g')
+        .selectAll('g')
+        .data(data)
+        .join('g')
+          .attr('transform', d => `translate(${x(d.day)}, 0)`)
+        .selectAll('rect')
+        .data(function(d) {return subgroups.map(function(index) { return{index: index, value: d[index]} })})
+        .join((enter) => {
+          enter.append('rect')
+            .attr('x', d => xSubgroup(d.index))
+            .attr('y', d => order(d.index, d.value))
+            .attr('width', xSubgroup.bandwidth())
+            .attr('height', d => height  - order(d.index, d.value))
+            .attr('fill', d => colors(d.index))
+            .attr('rx', 3)
 
-      return newValue
+          enter.append('rect')
+            .attr('x', d => xSubgroup(d.index))
+            .attr('y', height - 3)
+            .attr('width', xSubgroup.bandwidth())
+            .attr('height', 3)
+            .attr('fill', d => colors(d.index))
+        })
+      
+      // add captions
+      svg.append('g')
+        .selectAll('caption')
+        .data(data)
+        .join('g')
+          .attr('transform', d => `translate(${x(d.day) + 60}, -32)`)
+          .attr('opacity', 0)
+          .classed(`caption`, true)
+
+      d3.selectAll('g.caption')
+        .append('rect')
+        .attr('width', 40)
+        .attr('height', 64)
+        .attr('fill', '#E60000')
+
+      d3.selectAll('g.caption')
+        .data(data)
+        .append('text')
+        .attr('font-size', 7)
+        .attr('fill', '#fff')
+        .style('text-anchor', 'middle')
+        .text((d, i) => `${d.kilogram} kg`)
+        .attr('transform', 'translate(20, 17)')
+
+      d3.selectAll('g.caption')
+        .data(data)
+        .append('text')
+        .attr('font-size', 7)
+        .attr('fill', '#fff')
+        .style('text-anchor', 'middle')
+        .text((d, i) => `${d.calories} kCal`)
+        .attr('transform', 'translate(20, 47)')
+
+      d3.selectAll('div.grid div')
+      .on('mouseenter', function (d, i) {
+        const gridElId = this.getAttribute('id')
+        d3.selectAll(`.caption:nth-child(${gridElId})`).transition()
+            .duration('200')
+            .attr('opacity', '1')})
+      .on('mouseout', function (d, i) {
+        const gridElId = this.getAttribute('id')
+        d3.selectAll(`.caption:nth-child(${gridElId})`).transition()
+            .duration('200')
+            .attr('opacity', '0')})
     }
-    
-    svg.append('g')
-      .selectAll('g')
-      .data(data)
-      .join('g')
-        .attr('transform', d => `translate(${x(d.day)}, 0)`)
-      .selectAll('rect')
-      .data(function(d) {return subgroups.map(function(index) { return{index: index, value: d[index]} })})
-      .join((enter) => {
-        enter.append('rect')
-          .attr('x', d => xSubgroup(d.index))
-          .attr('y', d => order(d.index, d.value))
-          .attr('width', xSubgroup.bandwidth())
-          .attr('height', d => height  - order(d.index, d.value))
-          .attr('fill', d => colors(d.index))
-          .attr('rx', 5)
-
-        enter.append('rect')
-          .attr('x', d => xSubgroup(d.index))
-          .attr('y', height - 3)
-          .attr('width', xSubgroup.bandwidth())
-          .attr('height', 3)
-          .attr('fill', d => colors(d.index))
-      })
-    
-    // add captions
-    svg.append('g')
-      .selectAll('caption')
-      .data(data)
-      .join('g')
-        .attr('transform', d => `translate(${x(d.day) + 60}, -32)`)
-        .attr('opacity', 0)
-        .classed(`caption`, true)
-
-    d3.selectAll('g.caption')
-      .append('rect')
-      .attr('width', 40)
-      .attr('height', 64)
-      .attr('fill', '#E60000')
-
-    d3.selectAll('g.caption')
-      .data(data)
-      .append('text')
-      .attr('font-size', 7)
-      .attr('fill', '#fff')
-      .style('text-anchor', 'middle')
-      .text((d, i) => `${d.kilogram} kg`)
-      .attr('transform', 'translate(20, 17)')
-
-    d3.selectAll('g.caption')
-      .data(data)
-      .append('text')
-      .attr('font-size', 7)
-      .attr('fill', '#fff')
-      .style('text-anchor', 'middle')
-      .text((d, i) => `${d.calories} kCal`)
-      .attr('transform', 'translate(20, 47)')
-
-    d3.selectAll('div.grid div')
-    .on('mouseenter', function (d, i) {
-      const gridElId = this.getAttribute('id')
-      d3.selectAll(`.caption:nth-child(${gridElId})`).transition()
-          .duration('200')
-          .attr('opacity', '1')})
-    .on('mouseout', function (d, i) {
-      const gridElId = this.getAttribute('id')
-      d3.selectAll(`.caption:nth-child(${gridElId})`).transition()
-          .duration('200')
-          .attr('opacity', '0')})
   })
 
   return(

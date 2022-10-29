@@ -1,8 +1,6 @@
 import styled from "styled-components"
 import { useState, useLayoutEffect, useEffect, useRef } from 'react'
-import { useParams } from "react-router-dom"
 import * as d3 from 'd3'
-import { USER_PERFORMANCE } from "../data/data"
 
 const Container = styled.div`
   height: 100%;
@@ -19,10 +17,6 @@ const Container = styled.div`
 `
 
 export default function UserPerformance({ data }) {
-
-  const {id} = useParams()
-  const user = USER_PERFORMANCE.find(e => e.userId === parseInt(id))
-  // const data = user.data
 
   const ref = useRef(null)
 
@@ -51,15 +45,15 @@ export default function UserPerformance({ data }) {
       svgEl.selectAll('svg').remove()
       const svg = svgEl
         .append('svg')
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
+        .attr("width", width)
+        .attr("height", height)
         .append("g")
         .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
       // scale
       let radialScale = d3.scaleLinear()
         .domain([0, 10])
-        .range([0, height / 3.2])
+        .range([0, height / 3.5])
 
       // get maximum value
       let dataMax = Math.max(...data.map((e) => e.value))
@@ -129,7 +123,7 @@ export default function UserPerformance({ data }) {
             .attr("x", label_coordinate.x)
             .attr("y", label_coordinate.y)
             .attr("fill", "white")
-            .attr('font-size', 12)
+            .attr('font-size', 8)
             .attr('font-family', 'Roboto')
             .attr('font-weight', '500')
             .text(data[i].kind);

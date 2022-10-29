@@ -6,7 +6,7 @@ import styled from 'styled-components'
 
 const AsideContainer = styled.aside`
   margin: 0;
-  width: 117px;
+  width: 100px;
   z-index: -1;
   position: fixed;
   top: 0;
@@ -24,8 +24,8 @@ const AsideContainer = styled.aside`
 
     & li{
       list-style-type: none;
-      width: 64px;
-      height: 64px;
+      width: 60px;
+      height: 60px;
       background-color: white;
       border-radius: 6px;
       display: grid;

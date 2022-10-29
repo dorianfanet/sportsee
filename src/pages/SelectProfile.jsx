@@ -61,7 +61,9 @@ export default function SelectProfile() {
     <Container>
       <ul>
         {users.map((user) => 
-          <li>
+          <li
+            key={user.id}
+          >
             <Link to={`/user/${user.id}`}>
               <div>
                 <h2>{user.userInfos.firstName}</h2>

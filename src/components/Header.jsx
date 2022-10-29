@@ -8,7 +8,7 @@ const HeaderContainer = styled.header`
   min-width: 1024px;
   width: 100%;
   padding: 0 30px;
-  height: 91px;
+  height: 80px;
   background-color: var(--secondaryColor);
   position: fixed;
   display: flex;
@@ -17,7 +17,7 @@ const HeaderContainer = styled.header`
   z-index: 100;
 
   & img{
-    height: 57px;
+    height: 45px;
   }
 
   & nav{
@@ -27,7 +27,7 @@ const HeaderContainer = styled.header`
 
     & a{
       color: white;
-      font-size: 24px;
+      font-size: 18px;
       font-weight: 500;
     }
   }
@@ -57,23 +57,37 @@ const Toggle = styled.div`
     border: 4px solid white;
     background-color: white;
     border-radius: 5px;
-    
-    & .toggle{
-      width: calc(50% - 4px);
-      height: calc(100% - 4px);
-      position: absolute;
-      top: 0;
-      left: 0;
-      background-color: #282d3023;
-      border: 2px solid #282d30;
-      border-radius: 5px;
-      z-index: 10;
-      transition: all 200ms ease;
 
-      &.api{
+    & .toggle{
+        width: calc(50% - 4px);
+        height: calc(100% - 4px);
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: rgba(74,184,255,.1);
+        border: 2px solid #4AB8FF;
+        border-radius: 5px;
+        z-index: 10;
+        transition: all 200ms ease;
+    }
+    
+    &.api{
+
+      & .toggle{
         left: 70px;
-        background-color: #ff000033;
+        background-color: rgba(255,0,0,.1);
         border: 2px solid #FF0000;
+      }
+
+      & .toggle-item:nth-child(3){
+        color: #FF0000;
+      }
+    }
+
+    &.mock{
+
+      & .toggle-item:nth-child(2){
+        color: #4AB8FF;
       }
     }
 
@@ -84,11 +98,8 @@ const Toggle = styled.div`
       display: grid;
       place-content: center;
       z-index: 20;
-      color: #FF0000;
-
-      &:nth-child(2){
-        color: #282d30;
-      }
+      color: #282d30;
+      transition: all 200ms ease;
     }
   }
 `
@@ -118,8 +129,8 @@ export default function Header() {
         <Link to='community'>Communauté</Link>
       </nav>
       <Toggle>
-        <button onClick={() => toggleDataSourceButton()}>
-          <div className={dataSourceToggle === 'api' ? 'toggle api' : 'toggle'}></div>
+        <button onClick={() => toggleDataSourceButton()} className={dataSourceToggle === 'api' ? 'api' : 'mock'}>
+          <div className='toggle'></div>
           <div className='toggle-item'>Mock</div>
           <div className='toggle-item'>API</div>
         </button>

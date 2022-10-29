@@ -14,14 +14,14 @@ import WatermarkLogo from "../components/WatermarkLogo"
 import { DataSourceContext } from "../context/DataSourceContext"
 
 const Container = styled.section`
-  margin: 150px 90px 0 220px;
+  margin: 120px 50px 0 150px;
   display: inline-block;
-  max-width: calc(100% - 310px);
+  max-width: calc(100% - 200px);
   width: 100%;
 
   & h1{
     margin: 0;
-    font-size: 48px;
+    font-size: 42px;
     font-weight: 500;
 
     & span{
@@ -30,9 +30,9 @@ const Container = styled.section`
   }
 
   & h2{
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 400;
-    margin: 25px 0;
+    margin: 20px 0;
   }
 `
 
@@ -40,8 +40,8 @@ const Section = styled.section`
   margin-bottom: 30px;
   width: 100%;
   display: grid;
-  grid-template-columns: 75% 1fr;
-  grid-template-rows: 280px 280px;
+  grid-template-columns: 70% 1fr;
+  grid-template-rows: 200px 180px;
   gap: 30px;
 
   & .charts{
@@ -74,7 +74,7 @@ const Section = styled.section`
       height: 100%;
       display: flex;
       flex-direction: column;
-      gap: 39px;
+      gap: 25px;
     }
   }
 `
@@ -90,13 +90,10 @@ export default function Profile() {
 
   const { dataSource } = useContext(DataSourceContext)
 
-  console.log(dataSource)
-
   const {id} = useParams()
 
   useEffect(() => {
     async function getApiData() {
-      console.log('loading api')
       const data = new userData(id)
 
       const userInfos = await data.getUserInfos()
@@ -127,16 +124,10 @@ export default function Profile() {
     }
 
     if(dataSource === 'api' && dataSourceState !== 'api') {
-      console.log(dataSource, dataSourceState)
       getApiData()
     } else if(dataSource === 'mock') {
-      console.log(dataSource, dataSourceState)
       getMockData()
     }
-  })
-
-  useEffect(() => {
-    console.log(dataUserActivity)
   })
 
   return (
@@ -198,9 +189,10 @@ export default function Profile() {
         <aside>
           {dataUserInfos ? (
             <ul>
-              {dataUserInfos.keyData.map((data) => 
+              {dataUserInfos.keyData.map((data, index) => 
                 <KeyData 
                   data={data}
+                  key={index}
                 />
               )}
             </ul>

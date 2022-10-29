@@ -1,6 +1,4 @@
 import * as d3 from 'd3'
-import { useParams } from 'react-router-dom'
-import { USER_AVERAGE_SESSIONS } from '../data/data'
 import { useRef, useState, useLayoutEffect, useEffect } from 'react' 
 import styled from 'styled-components'
 
@@ -32,9 +30,9 @@ const Desc = styled.div`
   overflow: hidden;
 
   & .title{
-    font-size: 15px;
+    font-size: 13px;
     font-weight: 500;
-    margin: 25px;
+    margin: 20px;
     width: 60%;
     opacity: .7;
   }
@@ -83,10 +81,6 @@ const Desc = styled.div`
 
 export default function AverageSessions({ data }) {
 
-  const {id} = useParams()
-  const user = USER_AVERAGE_SESSIONS.find(e => e.userId === parseInt(id))
-  // const data = user.sessions
-
   const ref = useRef(null)
 
   const sessionLengths = data.map((e) => e.sessionLength)
@@ -104,114 +98,116 @@ export default function AverageSessions({ data }) {
 
   useEffect(() => {
 
-    // set the dimensions and margins of the graph
-    const margin = {top: 80, right: 0, bottom: 0, left: 0};
-    const width = divWidth - margin.left - margin.right;
-    const height = divHeight - margin.top - margin.bottom;
+    if(divHeight && divWidth) {
+      // set the dimensions and margins of the graph
+      const margin = {top: 60, right: 0, bottom: 50, left: 0};
+      const width = divWidth - margin.left - margin.right;
+      const height = divHeight - margin.top - margin.bottom;
 
-    // append the svg object to the body of the page
-    const svgEl = d3.select(ref.current)
-    svgEl.selectAll('svg').remove()
-    const svg = svgEl
-      .append('svg')
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
-      .append("g")
-      .attr("transform", `translate(${margin.left}, ${margin.top})`);
+      // append the svg object to the body of the page
+      const svgEl = d3.select(ref.current)
+      svgEl.selectAll('svg').remove()
+      const svg = svgEl
+        .append('svg')
+        .attr("width", width)
+        .attr("height", height)
+        .append("g")
+        .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
-    const linearGradient = svgEl.select('svg')
-      .append('defs')
-      .append('linearGradient')
-      .attr('id', 'linear')
-      .attr('x1', '0%')
-      .attr('y1', '0%')
-      .attr('x2', '100%')
-      .attr('y2', '0%')
-    
-    linearGradient.append('stop')
-      .attr('offset', '0%')
-      .attr('stop-color', "rgba(255, 0, 0, 0)")
+      const linearGradient = svgEl.select('svg')
+        .append('defs')
+        .append('linearGradient')
+        .attr('id', 'linear')
+        .attr('x1', '0%')
+        .attr('y1', '0%')
+        .attr('x2', '100%')
+        .attr('y2', '0%')
+      
+      linearGradient.append('stop')
+        .attr('offset', '0%')
+        .attr('stop-color', "rgba(255, 0, 0, 0)")
 
-    linearGradient.append('stop')
-      .attr('offset', '5%')
-      .attr('stop-color', "#ff5f5f")
+      linearGradient.append('stop')
+        .attr('offset', '5%')
+        .attr('stop-color', "#ff5f5f")
 
-    linearGradient.append('stop')
-      .attr('offset', '95%')
-      .attr('stop-color', "#ffffff")
-    linearGradient.append('stop')
+      linearGradient.append('stop')
+        .attr('offset', '95%')
+        .attr('stop-color', "#ffffff")
+      linearGradient.append('stop')
 
-      .attr('offset', '100%')
-      .attr('stop-color', "rgba(255, 0, 0, 0)")
+        .attr('offset', '100%')
+        .attr('stop-color', "rgba(255, 0, 0, 0)")
 
-    const x = d3.scaleLinear()
-      .domain([1, 7])
-      .range([18, width - 18])
+      const x = d3.scaleLinear()
+        .domain([1, 7])
+        .range([18, width - 18])
 
-    const y = d3.scaleLinear()
-      .domain([lowest * 0.8, highest])
-      .range([100, 0])
+      const y = d3.scaleLinear()
+        .domain([lowest * 0.8, highest])
+        .range([height, 0])
 
-    svg.append('path')
-      .data([data])
-      .attr('fill', 'none')
-      .attr('stroke', 'url(#linear)')
-      .attr('stroke-width', 2)
-      .attr('d', d3.line()
-        .curve(d3.curveNatural)
-        .x(function(d) {return x(d.day)})
-        .y(function(d) {return y(d.sessionLength)})
-      )
+      svg.append('path')
+        .data([data])
+        .attr('fill', 'none')
+        .attr('stroke', 'url(#linear)')
+        .attr('stroke-width', 2)
+        .attr('d', d3.line()
+          .curve(d3.curveNatural)
+          .x(function(d) {return x(d.day)})
+          .y(function(d) {return y(d.sessionLength)})
+        )
 
-    svg.append('g')
-      .selectAll("dot")
-      .data(data)
-      .join('g')
-      .classed('avg-caption', true)
-      .attr('opacity', '0')
+      svg.append('g')
+        .selectAll("dot")
+        .data(data)
+        .join('g')
+        .classed('avg-caption', true)
+        .attr('opacity', '0')
+          .append("circle")
+          .attr("cx", function (d) { return x(d.day); } )
+          .attr("cy", function (d) { return y(d.sessionLength); } )
+          .attr("r", 4)
+          .style("fill", "#fff")
+
+      d3.selectAll('g.avg-caption')
         .append("circle")
         .attr("cx", function (d) { return x(d.day); } )
         .attr("cy", function (d) { return y(d.sessionLength); } )
-        .attr("r", 4)
-        .style("fill", "#fff")
+        .attr("r", 10)
+        .style("fill", "#ffffff44")
 
-    d3.selectAll('g.avg-caption')
-      .append("circle")
-      .attr("cx", function (d) { return x(d.day); } )
-      .attr("cy", function (d) { return y(d.sessionLength); } )
-      .attr("r", 10)
-      .style("fill", "#ffffff44")
+      d3.selectAll('g.avg-caption')
+        .append('rect')
+        .attr('width', 40)
+        .attr('height', 25)
+        .attr("x", (function(d) { return x(d.day) }))
+        .attr("y", (function(d) { return y(d.sessionLength) }))
+        .attr('transform', `translate(10, -35)`)
+        .attr('fill', 'white')
 
-    d3.selectAll('g.avg-caption')
-      .append('rect')
-      .attr('width', 40)
-      .attr('height', 25)
-      .attr("x", (function(d) { return x(d.day) }))
-      .attr("y", (function(d) { return y(d.sessionLength) }))
-      .attr('transform', `translate(10, -35)`)
-      .attr('fill', 'white')
+      d3.selectAll('g.avg-caption')
+        .append('text')
+        .attr('font-size', 8)
+        .attr("x", (function(d) { return x(d.day) }))
+        .attr("y", (function(d) { return y(d.sessionLength) }))
+        .style('text-anchor', 'middle')
+        .attr('transform', `translate(30, -20)`)
+        .text((d, i) => `${d.sessionLength} min`)
 
-    d3.selectAll('g.avg-caption')
-      .append('text')
-      .attr('font-size', 8)
-      .attr("x", (function(d) { return x(d.day) }))
-      .attr("y", (function(d) { return y(d.sessionLength) }))
-      .style('text-anchor', 'middle')
-      .attr('transform', `translate(30, -20)`)
-      .text((d, i) => `${d.sessionLength} min`)
+      d3.selectAll('div.weekdays div')
+      .on('mouseenter', function (d, i) {
+        const gridElId = this.getAttribute('id')
+        d3.select(`.avg-caption:nth-child(${gridElId})`).transition()
+            .duration('200')
+            .attr('opacity', '1')})
+      .on('mouseout', function (d, i) {
+        const gridElId = this.getAttribute('id')
+        d3.select(`.avg-caption:nth-child(${gridElId})`).transition()
+            .duration('200')
+            .attr('opacity', '0')})
 
-    d3.selectAll('div.weekdays div')
-    .on('mouseenter', function (d, i) {
-      const gridElId = this.getAttribute('id')
-      d3.select(`.avg-caption:nth-child(${gridElId})`).transition()
-          .duration('200')
-          .attr('opacity', '1')})
-    .on('mouseout', function (d, i) {
-      const gridElId = this.getAttribute('id')
-      d3.select(`.avg-caption:nth-child(${gridElId})`).transition()
-          .duration('200')
-          .attr('opacity', '0')})
-
+    }
   })
 
   return (

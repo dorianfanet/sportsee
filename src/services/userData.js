@@ -73,6 +73,16 @@ export default class userData {
       calories: item.calories
     }))
   }
+  
+  async getUserAverageSessions() {
+    const response = await request(`${apiUrl}/user/${this.id}/average-sessions`)
+    const data = response.sessions
+
+    return data.map((item) => ({
+      day: item.day,
+      sessionLength: item.sessionLength
+    }))
+  }
 
   async getUserPerformance() {
     const response = await request(`${apiUrl}/user/${this.id}/performance`)
@@ -90,16 +100,6 @@ export default class userData {
     return data.data.map((item, index) => ({
       value: item.value,
       kind: `${formattedKinds[data.kind[item.kind]]}`
-    }))
-  }
-
-  async getUserAverageSessions() {
-    const response = await request(`${apiUrl}/user/${this.id}/average-sessions`)
-    const data = response.sessions
-
-    return data.map((item) => ({
-      day: item.day,
-      sessionLength: item.sessionLength
     }))
   }
 }

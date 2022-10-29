@@ -1,9 +1,3 @@
-import caloriesIcon from '../assets/calories.svg'
-import proteinsIcon from '../assets/proteins.svg'
-import carbsIcon from '../assets/carbs.svg'
-import lipidsIcon from '../assets/lipids.svg'
-import { USER_MAIN_DATA } from "../data/data"
-import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
 
 const Container = styled.li`
@@ -11,6 +5,7 @@ const Container = styled.li`
   display: flex;
   align-items: center;
   background-color: var(--backgroundGrey);
+  border-radius: 5px;
 
   figure{
     width: 60px;
@@ -40,7 +35,7 @@ const Container = styled.li`
   div{
 
     p{
-      font-size: 20px;
+      font-size: 16px;
       font-weight: bold;
       margin: 0;
       color: #282D30;
@@ -55,11 +50,6 @@ const Container = styled.li`
 `
 
 export default function KeyData({ data }) {
-
-  const { id } = useParams()
-  const idParam = parseInt(id)
-
-  const user = USER_MAIN_DATA.find(e => e.id === idParam)
 
   return (
     <Container>
