@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import PropTypes from 'prop-types'
 
 const Container = styled.li`
   height: 124px;
@@ -49,6 +50,10 @@ const Container = styled.li`
   }
 `
 
+/**
+ * KeyData component is used render key data in the right aside of the page
+ * @param {Object} data - Object containing key data of current user
+ */
 export default function KeyData({ data }) {
 
   return (
@@ -62,4 +67,8 @@ export default function KeyData({ data }) {
       </div>
     </Container>
   )
+}
+
+KeyData.propTypes = {
+  data: PropTypes.object
 }

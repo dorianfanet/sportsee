@@ -1,4 +1,9 @@
-export default async function request(URL) {
+/**
+ * Function used to fetch API data
+ * @param {String} URL - API endpoint 
+ * @returns {Promise}
+ */
+export default async function fetchData(URL) {
   return await fetch(`${URL}`, {
     "method": "GET",
   })

@@ -1,4 +1,5 @@
 import styled from "styled-components"
+import PropTypes from 'prop-types'
 
 const SvgContainer = styled.div`
   width: 90%;
@@ -20,6 +21,10 @@ const SvgContainer = styled.div`
   }
 `
 
+/**
+ * 
+ * @param {String} type - Defines if watermark has to be dark or light, depending on the color of the parent element
+ */
 export default function WatermarkLogo({ type }) {
   const elemColor = type === 'dark' ? '#282d30' : '#fff'
   return (
@@ -32,4 +37,8 @@ export default function WatermarkLogo({ type }) {
       <p style={{color: elemColor}}>Une erreur est apparue, essayez de recharger la page</p>
     </SvgContainer>
   )
+}
+
+WatermarkLogo.propTypes = {
+  type: PropTypes.string
 }
