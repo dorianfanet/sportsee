@@ -12,11 +12,11 @@ const SvgContainer = styled.div`
   opacity: .4;
 
   & svg{
-    width: 120px;
+    width: 80px;
   }
 
   & p{
-    font-size: 16px;
+    font-size: 12px;
     text-align: center;
   }
 `

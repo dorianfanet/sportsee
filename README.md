@@ -4,6 +4,13 @@ Front-end repo of Sportsee project
 
 ---
 
+### Prerequisites
+
+ - [Node.js](https://nodejs.org/en/) v18.11.0
+[React](https://fr.reactjs.org/) v18.2.0
+
+---
+
 ### Launching back-end
 
 Clone back-end repo from: https://github.com/OpenClassrooms-Student-Center/P9-front-end-dashboard
