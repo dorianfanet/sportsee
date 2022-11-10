@@ -82,7 +82,7 @@ const Desc = styled.div`
 
 /**
  * AverageSessions component is used to generate average sessions chart using d3
- * @param {Object} data - Object containing sessions data of current user
+ * @param {Array} data - Object containing sessions data of current user
  */
 export default function AverageSessions({ data }) {
 
@@ -234,5 +234,5 @@ export default function AverageSessions({ data }) {
 }
 
 AverageSessions.propTypes = {
-  data: PropTypes.object
+  data: PropTypes.array
 }

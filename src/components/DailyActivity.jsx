@@ -81,7 +81,7 @@ const Grid = styled.div`
 
 /**
  * DailyActivity component is used to generate daily activity chart using d3
- * @param {Object} data - Object containing daily activity data of current user
+ * @param {Array} data - Object containing daily activity data of current user
  */
 export default function DailyActivity({ data }) {
 
@@ -334,5 +334,5 @@ export default function DailyActivity({ data }) {
 }
 
 DailyActivity.propTypes = {
-  data: PropTypes.object
+  data: PropTypes.array
 }

@@ -19,7 +19,7 @@ const Container = styled.div`
 
 /**
  * UserPerformance component is used to generate user performance chart using d3
- * @param {Object} data - Object containing performance data of current user
+ * @param {Array} data - Object containing performance data of current user
  */
 export default function UserPerformance({ data }) {
 
@@ -163,5 +163,5 @@ export default function UserPerformance({ data }) {
 }
 
 UserPerformance.propTypes = {
-  data: PropTypes.object
+  data: PropTypes.array
 }

@@ -1,4 +1,3 @@
-import './App.css';
 import { Routes, Route } from 'react-router-dom'
 import SelectProfile from './pages/SelectProfile'
 import Profile from './pages/Profile'

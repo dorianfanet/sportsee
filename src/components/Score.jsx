@@ -40,7 +40,7 @@ const Container = styled.div`
 
 /**
  * Score component is used to generate score chart using d3
- * @param {Object} data - Object containing score data of current user
+ * @param {number} data - Object containing score data of current user
  */
 export default function Score({ data }) {
 
@@ -110,5 +110,5 @@ export default function Score({ data }) {
 }
 
 Score.propTypes = {
-  data: PropTypes.object
+  data: PropTypes.number
 }
