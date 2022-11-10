@@ -15,20 +15,20 @@ const apiUrl = 'http://localhost:3000'
  */
 
 /**
- * @typedef {Object} UserActivity
+ * @typedef {Array} UserActivity
  * @property {String} day - Date of data
  * @property {number} kilogram - Weight of user this day
  * @property {number} score - Calories burnt this day
  */
 
 /**
- * @typedef {Object} AverageSessions
+ * @typedef {Array} AverageSessions
  * @property {String} day - Day of the week
  * @property {number} sessionLength - Length of the session
  */
 
 /**
- * @typedef {Object} UserPerformance
+ * @typedef {Array} UserPerformance
  * @property {number} value - Value of performance
  * @property {String} kind - Kind of performance associated with value
  */

@@ -41,7 +41,7 @@ const Section = styled.section`
   width: 100%;
   display: grid;
   grid-template-columns: 70% 1fr;
-  grid-template-rows: 200px 180px;
+  grid-template-rows: 250px 200px;
   gap: 30px;
 
   & .charts{
